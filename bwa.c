@@ -280,7 +280,10 @@ bwaidx_t *bwa_idx_load_from_disk(const char *hint, int which)
 
 bwaidx_t *bwa_idx_load(const char *hint, int which)
 {
-	return bwa_idx_load_from_disk(hint, which);
+	double t_real = realtime();
+	bwaidx_t* bidx = bwa_idx_load_from_disk(hint, which);
+	fprintf(stderr, "\n[%s] wall time: %.3f sec; CPU: %.3f sec\n", __func__, realtime() - t_real, cputime());
+	return bidx;
 }
 
 void bwa_idx_destroy(bwaidx_t *idx)

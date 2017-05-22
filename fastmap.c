@@ -41,6 +41,7 @@ static void *process(void *shared, int step, void *_data)
 	ktp_data_t *data = (ktp_data_t*)_data;
 	int i;
 	if (step == 0) {
+		double t_real = realtime();
 		ktp_data_t *ret;
 		int64_t size = 0;
 		ret = calloc(1, sizeof(ktp_data_t));
@@ -56,7 +57,7 @@ static void *process(void *shared, int step, void *_data)
 			}
 		for (i = 0; i < ret->n_seqs; ++i) size += ret->seqs[i].l_seq;
 		if (bwa_verbose >= 3)
-			fprintf(stderr, "[M::%s] read %d sequences (%ld bp)...\n", __func__, ret->n_seqs, (long)size);
+			fprintf(stderr, "[M::%s] read %d sequences (%ld bp)... in wall time %.3f sec; CPU: %.3f sec\n", __func__, ret->n_seqs, (long)size, realtime() - t_real, cputime());
 		return ret;
 	} else if (step == 1) {
 		const mem_opt_t *opt = aux->opt;
